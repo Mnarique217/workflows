@@ -5,6 +5,7 @@ Based on the official [GitHub Actions Concepts](https://docs.github.com/en/actio
 ## 1. Fundamentals
 
 1. [Workflows](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows)
+    - [Triggers](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 2. [Jobs and steps](https://docs.github.com/en/actions/concepts/workflows-and-actions)
 3. [Runners](https://docs.github.com/en/actions/concepts/runners)
 4. [Variables](https://docs.github.com/en/actions/concepts/workflows-and-actions/variables)
