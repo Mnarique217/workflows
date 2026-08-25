@@ -1,14 +1,24 @@
-FROM node:18-alpine
+FROM node:18-alpine AS builder
 
 WORKDIR /usr/src/app
 
-# Install dependencies first (use package.json)
+# Install only production dependencies in builder
 COPY package.json package-lock.json* ./
-RUN npm install --production --no-audit --no-fund
+RUN npm ci --only=production --no-audit --no-fund
 
-# Copy app sources
-COPY . .
+# Copy source files
+COPY src ./src
+
+FROM node:18-alpine AS runtime
+
+WORKDIR /usr/src/app
+ENV NODE_ENV=production
+
+# Copy production node_modules and source from builder
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/src ./src
+COPY package.json ./
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["node", "src/server.js"]
