@@ -4,10 +4,14 @@
   "description": "Minimal in-memory books CRUD API",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "test": "node --test"
   },
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "supertest": "^7.0.0"
   },
   "engines": {
     "node": ">=16"
