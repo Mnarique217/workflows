@@ -9,7 +9,7 @@ RUN npm ci --only=production --no-audit --no-fund
 # Copy source files
 COPY src ./src
 
-FROM node:22-slim
+FROM node:22-alpine
 
 WORKDIR /usr/src/app
 ENV NODE_ENV=production
