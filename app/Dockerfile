@@ -1,4 +1,4 @@
-FROM node:24-slim AS builder
+FROM node:22-bookworm AS builder
 
 WORKDIR /usr/src/app
 
@@ -9,7 +9,7 @@ RUN npm ci --only=production --no-audit --no-fund
 # Copy source files
 COPY src ./src
 
-FROM node:24-slim
+FROM node:22-slim
 
 WORKDIR /usr/src/app
 ENV NODE_ENV=production
