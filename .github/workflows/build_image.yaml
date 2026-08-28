@@ -1,0 +1,35 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "feature/basic-app" ]
+  pull_request:
+    branches: [ "feature/basic-app" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: application/package-lock.json
+
+      - name: Build the Docker image
+        working-directory: app
+        run: docker build --file Dockerfile --tag app:${{ github.run_id }}
+
+      - name: CVE Scanner
+        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+        with:
+          scan-type: image
+          image-ref: app:${{ github.run_id }}
+          severity: HIGH,CRITICAL
+          ignore-unfixed: false
+          exit-code: '1'
