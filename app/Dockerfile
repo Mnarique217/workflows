@@ -1,24 +1,20 @@
-FROM node:24-slim AS builder
+FROM node:24-alpine AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Install only production dependencies in builder
-COPY package.json package-lock.json* ./
-RUN npm ci --only=production --no-audit --no-fund
+COPY package*.json ./
+RUN npm ci
 
-# Copy source files
-COPY src ./src
+COPY . .
 
-FROM node:24-slim
+FROM gcr.io/distroless/nodejs24-debian12 AS runtime
 
-WORKDIR /usr/src/app
-ENV NODE_ENV=production
+WORKDIR /app
 
-# Copy production node_modules and source from builder
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/src ./src
-COPY package.json ./
+COPY --from=builder /app/src ./src
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
 
 EXPOSE 3000
 
-CMD ["node", "src/server.js"]
+CMD ["src/server.js"]
