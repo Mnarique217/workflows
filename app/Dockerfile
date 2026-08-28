@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /usr/src/app
 
@@ -9,7 +9,7 @@ RUN npm ci --only=production --no-audit --no-fund
 # Copy source files
 COPY src ./src
 
-FROM node:18-alpine AS runtime
+FROM node:24-alpine
 
 WORKDIR /usr/src/app
 ENV NODE_ENV=production
